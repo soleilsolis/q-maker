@@ -16,8 +16,10 @@
                     <h1 class="text-2xl font-bold">Library</h1>
                     <span class="text-gray-500">Created 02/06/2021</span>
                 </div>
-                <div class="border-dashed border-2 border-purple-600 overflow-hidden rounded-lg p-6">
-                    <h1 class="text-2xl font-bold">New Queue</h1>
+                <div class="border-dashed border-2 hover:border-red-500 overflow-hidden rounded-lg p-6 ">
+                    <h1 class="text-2xl font-bold">
+                        + New Queue
+                    </h1>
                 </div>
             </div>
         </div>
