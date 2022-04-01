@@ -71,6 +71,17 @@ return [
             'transport' => 'array',
         ],
 
+        'smtp' => [
+            'transport' => 'smtp',
+            'host' => env('MAIL_HOST', 'smtp.hostinger.com'),
+            'port' => env('MAIL_PORT', 465),
+            'encryption' => env('MAIL_ENCRYPTION', 'ssl'),
+            'username' => env('MAIL_USERNAME'),
+            'password' => env('MAIL_PASSWORD'),
+            'timeout' => null,
+            'auth_mode' => null,
+        ],
+
         'failover' => [
             'transport' => 'failover',
             'mailers' => [
@@ -92,7 +103,7 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
+        'address' => env('MAIL_FROM_ADDRESS', 'no-reply@soletech-it.com'),
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
