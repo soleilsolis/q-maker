@@ -1,6 +1,12 @@
 <?php
 
+use App\Http\Controllers\QueueController;
+use App\Models\Queue;
+
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Carbon\Carbon;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -17,9 +23,23 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+Route::middleware(['auth:sanctum', 'verified'])->group(function (){
+    Route::get('/dashboard', function () {
+        return view('dashboard',[
+            'queues' => Queue::where('user_id', '=', Auth::id())->get(),
+            'carbon' => new Carbon
+        ]);
+    })->name('dashboard');
+
+
+    Route::prefix('queue')->group(function () {
+        Route::get('show/{id}', [QueueController::class, 'show'])
+            ->whereNumber('id');
+
+        Route::post('/store', [QueueController::class, 'store']);
+
+    }); 
+});
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/test', function () {
     return view('test');
