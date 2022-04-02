@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateQueueRequest;
 use Illuminate\Http\Request;
 use Validator;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class QueueController extends Controller
 {
@@ -19,6 +20,28 @@ class QueueController extends Controller
     public function index()
     {
         //
+    }
+
+    public function public(Request $request)
+    {
+        $queue = Queue::where('unique_code','=',$request->unique_code)->first();
+
+        return view('queue.public',[
+            'queue' => $queue,
+            'current_time' => Carbon::now()
+        ]);
+        
+    }
+
+    public function next(Request $request)
+    {
+        $queue = Queue::findOrFail($request->id);
+        $queue->number++;
+        $queue->save();
+
+        return response()->json([
+            'reload' => 1
+        ]);
     }
 
     /**
