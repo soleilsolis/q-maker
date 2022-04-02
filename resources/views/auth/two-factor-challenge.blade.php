@@ -1,3 +1,5 @@
+@section('title', '2FA')
+
 <x-guest-layout>
     <x-jet-authentication-card>
         <x-slot name="logo">
