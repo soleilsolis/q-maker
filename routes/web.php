@@ -23,6 +23,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('q/{unique_code}', [QueueController::class, 'public']);
+
 Route::middleware(['auth:sanctum', 'verified'])->group(function (){
     Route::get('/dashboard', function () {
         return view('dashboard',[
@@ -31,13 +33,13 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function (){
         ]);
     })->name('dashboard');
 
-
     Route::prefix('queue')->group(function () {
         Route::get('show/{id}', [QueueController::class, 'show'])
             ->whereNumber('id');
 
         Route::post('/store', [QueueController::class, 'store']);
 
+        Route::post('/next', [QueueController::class, 'next']);
     }); 
 });
 
