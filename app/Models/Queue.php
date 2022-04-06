@@ -19,4 +19,9 @@ class Queue extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function item()
+    {
+        return $this->hasMany(Item::class);
+    }
 }
