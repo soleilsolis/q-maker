@@ -11,19 +11,22 @@
         <div class="max-w-7xl mx-auto px-4 lg:px-8">
             <div class="ui mobile reversed stackable two column grid">
                 <div class="column">
-                    <div class="ui form">
+                    <form id="itemCreate" name="itemCreate" class="ui form">
+                        @csrf
+
+                        <input type="hidden" name="queue_id" id="queue_id" value="{{ $queue->id }}"> 
                         <div class="field">
-                            <label for="">Name</label>
-                            <input type="text" name="" id="">
+                            <label for="name">Name</label>
+                            <input type="text" name="name" id="name">
                         </div>
                         <div class="field">
                             <label for="">Cellphone # (Optional)</label>
-                            <input type="number" name="" id="">
+                            <input type="number" name="phone_number" id="phone_number">
                         </div>
                         <div class="field">
-                            <button class="ui large circular button purple">Add</button>
+                            <span class="ui large circular button purple submit-form" data-send="/item/store" data-form="itemCreate">Add</span>
                         </div>
-                    </div>
+                    </form>
 
                     <div class="ui divider"></div>
 
@@ -36,19 +39,27 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td class="collapsing">1</td>
-                                <td>John Doe</td>
-                                <td class="right aligned">09152041574</td> 
-                            </tr>
+                            @foreach($items as $i)
+                                <tr>
+                                    <td class="collapsing">{{ $i->number }}</td>
+                                    <td>{{ $i->name }}</td>
+                                    <td class="right aligned">{{ $i->phone_number }}</td> 
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
                 <div class="column">
                     <h3 class="ui header">Current Number</h3>
-                    <h2 class="ui large header" style="font-size: 4rem">#{{ $queue->number }}</h2>
-                    <button class="ui large circular button purple submit-form" data-id="{{ $queue->id }}" data-send="/queue/next">Next</button>
+                    <h2 class="ui large header" style="font-size: 4rem">
+                        #{{ $item->number ?? 0 }}
+                        <div class="sub header">{{ $item->name ?? '' }}</div>
+                        <div class="sub header">{{ $item->phone_number ?? '' }}</div>
+                    </h2>
 
+                    @isset($items[0])
+                        <button class="ui large circular button purple submit-form" data-id="{{ $queue->id }}" data-send="/queue/next">Next</button>
+                    @endisset
                 </div>
             </div>
             

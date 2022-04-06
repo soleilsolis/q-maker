@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\QueueController;
+use App\Http\Controllers\ItemController;
+
 use App\Models\Queue;
 
 use Illuminate\Support\Facades\Auth;
@@ -24,6 +26,8 @@ Route::get('/', function () {
 });
 
 Route::get('q/{unique_code}', [QueueController::class, 'public']);
+Route::get('x/{unique_code}', [QueueController::class, 'sse']);
+
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function (){
     Route::get('/dashboard', function () {
@@ -41,6 +45,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function (){
 
         Route::post('/next', [QueueController::class, 'next']);
     }); 
+
+    Route::prefix('item')->group(function () {
+        Route::post('/store', [ItemController::class, 'store']);
+    });
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/test', function () {
