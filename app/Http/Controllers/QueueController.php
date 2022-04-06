@@ -79,7 +79,7 @@ class QueueController extends Controller
                         // A Twilio phone number you purchased at twilio.com/console
                         'from' => '+15075433477',
                         // the body of the text message you'd like to send
-                        'body' => "\nHi Mr/Mrs. {$item->name}, Thank you for waiting!\n\nYour Queue number {$queue->number} will be called soon.\nPlease proceed to the Queue Area.\n\nPlease go to this page if you wish to keep an eye on the queue screen.\nhttps://localhost:8000/q/{$queue->name}\n\nThis is the reminder that your queue number will be invalid if you will be exceeded in the queue. Thank you!"
+                        'body' => "\nHi Mr/Mrs. {$item->name}, Thank you for waiting!\n\nYour Queue number {$item->number} will be called soon.\nPlease proceed to the Queue Area.\n\nPlease go to this page if you wish to keep an eye on the queue screen.\nhttps://localhost:8000/q/{$queue->name}\n\nThis is the reminder that your queue number will be invalid if you will be exceeded in the queue. Thank you!"
                     ]
                 );
             }
