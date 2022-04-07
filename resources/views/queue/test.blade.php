@@ -18,8 +18,8 @@
             # <span id="result">{{ $queue->number }}</span>
         </h1>
 
-        <div class="ui centered header" onload="startTime()">
-            <div id="txt"></div>
+        <div class="ui centered header">
+            <span id="date"></span>
         </div>
     </x-jet-authentication-card>
 
@@ -34,5 +34,21 @@
         }
 
     </script>
- 
+    <script>
+        function clockTick() {
+          let currentTime = new Date(),
+              month = currentTime.getMonth() + 1,
+              day = currentTime.getDate(),
+              year = currentTime.getFullYear(),
+              hours = currentTime.getHours(),
+              minutes = currentTime.getMinutes(),
+              seconds = currentTime.getSeconds(),
+              text = (month + "/" + day + "/" + year + ' ' + hours + ':' + minutes + ':' + seconds);
+          // here we get the element with the id of "date" and change the content to the text variable we made above
+          document.getElementById('date').innerHTML = text;
+        }
+
+        // here we run the clockTick function every 1000ms (1 second)
+        setInterval(clockTick, 1000);
+    </script>
 </x-guest-layout>

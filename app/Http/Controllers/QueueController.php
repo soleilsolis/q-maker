@@ -40,8 +40,8 @@ class QueueController extends Controller
     public function public(Request $request)
     {
         $queue = Queue::where('unique_code','=',$request->unique_code)->first();
-
-        return view('queue.public',[
+        
+        return view('queue.test',[
             'queue' => $queue,
             'current_time' => Carbon::now(),
             'minutes' => Carbon::now()->isoFormat('m'),
