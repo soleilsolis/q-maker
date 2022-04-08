@@ -25,7 +25,7 @@
 
     <script>
         if(typeof(EventSource) !== "undefined") {
-          var source = new EventSource("https://rtuqmaker.xyz/x/{{ $queue->unique_code }}");
+          var source = new EventSource("/x/{{ $queue->unique_code }}");
           
           source.onmessage = function(event) {
             console.log(1)
