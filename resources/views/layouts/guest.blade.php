@@ -22,7 +22,7 @@
         <!-- Scripts -->
         <script src="{{ mix('js/app.js') }}" defer></script>
     </head>
-    <body class="bg-gray-100" onload="startTime()">
+    <body class="bg-gray-100">
         <div class="font-sans text-gray-900 antialiased" >
             {{ $slot }}
         </div>
