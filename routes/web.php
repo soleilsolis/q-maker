@@ -40,6 +40,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function (){
     Route::prefix('queue')->group(function () {
         Route::get('show/{id}', [QueueController::class, 'show'])->whereNumber('id');
         Route::get('edit/{id}', [QueueController::class, 'edit'])->whereNumber('id');
+        Route::post('update/{id}', [QueueController::class, 'update'])->whereNumber('id');
+        Route::post('delete/{id}', [QueueController::class, 'destroy'])->whereNumber('id');
+
+
         Route::post('/store', [QueueController::class, 'store']);
         Route::post('/next', [QueueController::class, 'next']);
     }); 

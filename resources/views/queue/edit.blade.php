@@ -11,46 +11,37 @@
         <div class="ui two column stackable grid">
             <div class="column">
                 <form id="editQueue" name="editQueue" class="ui form">
+                    @csrf
                     <div class="field">
                         <label for="name">Name</label>
-                        <input id="name" name="name" type="text">
+                        <input id="name" name="name" type="text" value="{{ $queue->name }}">
+                    </div>
+                    <div class="field">
+                        <label for="unique_code">Unique Code</label>
+                        <input id="unique_code" name="unique_code" type="text" value="{{ $queue->unique_code }}">
                     </div>
                 </form>
 
                 <br>
-                <a class="ui purple circular button">Save</a>
-                <a class="ui red circular button" target="_blank">Delete</a>
-
-
+                <button class="ui purple circular button submit-form" data-form="editQueue" data-send="/queue/update/{{ $queue->id }}">Save</button>
+                <a id="delete" class="ui red circular button" target="_blank">Delete</a>
             </div>
         </div>
     </div>
 
-    <div class="ui small modal">
-        <div class="header">New Queue</div>
-        <div class="content">
-            <form id="createQueue" name="createQueue" class="ui form">
-                @csrf
-
-                <div class="field">
-                    <label for="name">Name</label>
-                    <input id="name" name="name" type="text" />
-                </div>
-
-                <div class="field">
-                    <label for="unique_code">Unique Key</label>
-                    <input id="unique_code" name="unique_code" type="text" />
-                </div>
-            </form>
-        </div>
+    <div class="ui mini modal">
+        <div class="header">Delete Queue</div>
+        <div class="content">Are you sure? This cannot be undone!</div>
         <div class="actions">
-            <button class="ui purple circular button submit-form" data-form="createQueue" data-send="/queue/store">Create</button>
+            <button class="ui circular black button">No</button>
+            <button class="ui circular red button submit-form" data-form="editQueue" data-send="/queue/delete/{{ $queue->id }}">Yes</button>
         </div>
     </div>
 
-    <script>
-        $('#delete').click(function(){
-            $('.modal').modal('show');
-        });
-    </script>
+    
 </x-app-layout>
+<script>
+    $('#delete').click(function(){
+        $('.modal').modal('show');
+    });
+</script>

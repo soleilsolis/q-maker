@@ -2,17 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreQueueRequest;
+use App\Http\Requests\UpdateQueueRequest;
+
 use App\Models\Queue;
 use App\Models\Item;
 
-use App\Http\Requests\StoreQueueRequest;
-use App\Http\Requests\UpdateQueueRequest;
-use Illuminate\Http\Request;
+use Carbon\Carbon;
+
 use Validator;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+
 use Twilio\Rest\Client;
-use Carbon\Carbon;
 
 class QueueController extends Controller
 {
@@ -213,9 +218,38 @@ class QueueController extends Controller
      * @param  \App\Models\Queue  $queue
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Queue $queue)
+    public function update(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => ['required', 'string', 'max:255'],
+            'unique_code' => [
+                'required', 
+                Rule::unique('queues')->ignore($request->id),
+                'string', 
+                'max:13' ,
+                'regex:/^[a-zA-Z0-9]+$/u'
+            ]
+        ]);
+
+        if ($validator->fails()) 
+        {
+            return response()->json([
+                'errors' => $validator->errors(),
+                'message' => 'error',
+                'color' => 'error'
+            ]);
+        }
+
+        $queue = Queue::findOrFail($request->id);
+        $queue->name = $request->name;
+        $queue->unique_code = $request->unique_code;
+        $queue->save();
+
+        return response()->json([
+            'reload' => 1,
+            'message' => 'Changes Saved',
+            'color' => 'success'
+        ]);
     }
 
     /**
@@ -224,8 +258,14 @@ class QueueController extends Controller
      * @param  \App\Models\Queue  $queue
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Queue $queue)
+    public function destroy(Request $request)
     {
-        //
+        $queue = Queue::findOrFail($request->id);
+        $queue->forceDelete();
+
+        return response()->json([
+            'redirect' => 1,
+            'url' => '/dashboard'
+        ]);
     }
 }
