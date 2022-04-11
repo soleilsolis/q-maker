@@ -28,6 +28,7 @@ Route::get('/', function () {
 
 Route::get('q/{unique_code}', [QueueController::class, 'public']);
 Route::post('x/{unique_code}', [QueueController::class, 'live']);
+Route::get('/reset', [QueueController::class, 'reset']);
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function (){
     Route::get('/dashboard', function () {
@@ -42,7 +43,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function (){
         Route::get('edit/{id}', [QueueController::class, 'edit'])->whereNumber('id');
         Route::post('update/{id}', [QueueController::class, 'update'])->whereNumber('id');
         Route::post('delete/{id}', [QueueController::class, 'destroy'])->whereNumber('id');
-
 
         Route::post('/store', [QueueController::class, 'store']);
         Route::post('/next', [QueueController::class, 'next']);
