@@ -7,13 +7,13 @@
     </x-slot>
 
     <div class="py-4">
-        <div class="max-w-7xl mx-auto px-4 lg:px-8">
+        <div class="max-w-7xl mx-auto">
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-5">
                 @foreach($queues as $queue)
                     <a href="/queue/show/{{ $queue->id }}" class="bg-white overflow-hidden shadow-xl rounded-lg p-6 cursor-pointer">
                         <h1 class="text-2xl font-bold text-black">{{ $queue->name }}</h1>
                         <span class="text-gray-500">
-                            Created {{ $carbon->parse($queue->created_at)->isoFormat('M/d/Y') }}
+                            Created {{ $carbon->parse($queue->created_at)->isoFormat('M/DD/Y') }}
                         </span>
                     </a>
                 @endforeach

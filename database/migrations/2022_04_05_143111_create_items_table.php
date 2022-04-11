@@ -19,7 +19,7 @@ class CreateItemsTable extends Migration
             $table->bigInteger('number');
             $table->char('phone_number')->nullable();
             $table->unsignedBigInteger('queue_id');
-            $table->foreign('queue_id')->references('id')->on('queues');
+            $table->foreign('queue_id')->references('id')->on('queues')->onDelete('cascade');
             $table->timestamps();
         });
     }

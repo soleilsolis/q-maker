@@ -1,13 +1,14 @@
 <?php
+use App\Models\Queue;
 
 use App\Http\Controllers\QueueController;
 use App\Http\Controllers\ItemController;
 
-use App\Models\Queue;
+use Carbon\Carbon;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Carbon\Carbon;
+
 
 
 /*
@@ -28,7 +29,6 @@ Route::get('/', function () {
 Route::get('q/{unique_code}', [QueueController::class, 'public']);
 Route::post('x/{unique_code}', [QueueController::class, 'live']);
 
-
 Route::middleware(['auth:sanctum', 'verified'])->group(function (){
     Route::get('/dashboard', function () {
         return view('dashboard',[
@@ -38,11 +38,13 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function (){
     })->name('dashboard');
 
     Route::prefix('queue')->group(function () {
-        Route::get('show/{id}', [QueueController::class, 'show'])
-            ->whereNumber('id');
+        Route::get('show/{id}', [QueueController::class, 'show'])->whereNumber('id');
+        Route::get('edit/{id}', [QueueController::class, 'edit'])->whereNumber('id');
+        Route::post('update/{id}', [QueueController::class, 'update'])->whereNumber('id');
+        Route::post('delete/{id}', [QueueController::class, 'destroy'])->whereNumber('id');
+
 
         Route::post('/store', [QueueController::class, 'store']);
-
         Route::post('/next', [QueueController::class, 'next']);
     }); 
 
@@ -50,7 +52,3 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function (){
         Route::post('/store', [ItemController::class, 'store']);
     });
 });
-
-Route::middleware(['auth:sanctum', 'verified'])->get('/test', function () {
-    return view('test');
-})->name('test');
