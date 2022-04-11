@@ -1,6 +1,7 @@
 @section('title', $queue->name)
 
 <x-guest-layout>
+    <input type="hidden" name="queue_number" id="queue_number">
     <x-jet-authentication-card>
         <x-slot name="logo">
             <x-jet-authentication-card-logo />
@@ -15,27 +16,16 @@
         </h1>
 
         <h1 class="ui centered header" style="font-size: 4rem">
-            # <span id="result">{{ $queue->number }}</span>
+            #<span class="queue_number">{{ $queue->number }}</span>
         </h1>
 
         <div class="ui centered header">
             <span id="date"></span>
         </div>
+
+        <button id="updateQueueNumber" class="ui transition hidden submit-form" data-id="0" data-send="/x/{{ $queue->unique_code }}"></button>
     </x-jet-authentication-card>
 
-    <script>
-        if(typeof(EventSource) !== "undefined") {
-          var source = new EventSource("/x/{{ $queue->unique_code }}");
-          
-          source.onmessage = function(event) {
-            console.log(1)
-            document.getElementById("result").innerHTML = event.data + "<br>";
-          };
-        } else {
-          document.getElementById("result").innerHTML = "Sorry, your browser does not support server-sent events...";
-        }
-
-    </script>
     <script>
         function clockTick() {
           let currentTime = new Date(),
@@ -52,5 +42,10 @@
 
         // here we run the clockTick function every 1000ms (1 second)
         setInterval(clockTick, 1000);
+
+        setInterval(() => {
+            console.log($('#updateQueueNumber').click())
+            
+        }, 1000);
     </script>
 </x-guest-layout>

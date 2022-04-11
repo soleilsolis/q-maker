@@ -26,6 +26,17 @@ class QueueController extends Controller
         //
     }
 
+    public function live(Request $request)
+    {
+        $queue = Queue::where('unique_code','=',$request->unique_code)->first();
+
+        return response()->json([
+            'data' => [
+                'queue_number' => $queue->number
+            ]
+        ]);
+    }
+
     public function sse(Request $request)
     {
         header('Content-Type: text/event-stream');

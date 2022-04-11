@@ -26,7 +26,7 @@ Route::get('/', function () {
 });
 
 Route::get('q/{unique_code}', [QueueController::class, 'public']);
-Route::get('x/{unique_code}', [QueueController::class, 'sse']);
+Route::post('x/{unique_code}', [QueueController::class, 'live']);
 
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function (){
