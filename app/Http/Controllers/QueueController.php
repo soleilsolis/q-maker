@@ -26,9 +26,14 @@ class QueueController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function reset()
     {
-        //
+        $queues = Queue::all();
+
+        foreach ($queues as $queue) {
+            $queue->number = 0;
+            $queue->save();
+        }
     }
 
     public function live(Request $request)
@@ -40,17 +45,6 @@ class QueueController extends Controller
                 'queue_number' => $queue->number
             ]
         ]);
-    }
-
-    public function sse(Request $request)
-    {
-        header('Content-Type: text/event-stream');
-        header('Cache-Control: no-cache');
-
-        $queue = Queue::where('unique_code','=',$request->unique_code)->first();
-
-        echo "data:{$queue->number}\n\n";
-        flush();
     }
 
     public function public(Request $request)
@@ -160,10 +154,9 @@ class QueueController extends Controller
      */
     public function show(Queue $queue, Request $request)
     {
-        $now = Carbon::now()->format('Y-m-d');
-     
         $queue = Queue::findOrFail($request->id);
-        
+        $now = Carbon::now()->format('Y-m-d');
+
         $items = Item::where('queue_id', '=', $queue->id)
             ->where('number', '>', $queue->number)
             ->where(DB::raw('date(created_at)'), '=', $now)
