@@ -192,9 +192,18 @@ class QueueController extends Controller
      * @param  \App\Models\Queue  $queue
      * @return \Illuminate\Http\Response
      */
-    public function edit(Queue $queue)
+    public function edit(Queue $queue, Request $request)
     {
-        //
+        $queue = Queue::findOrFail($request->id);
+        
+        if($queue->user_id != Auth::id())
+        {
+            return abort(404);
+        }
+
+        return view('queue.edit', [
+            'queue' => $queue,
+        ]);
     }
 
     /**

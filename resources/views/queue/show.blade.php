@@ -5,6 +5,8 @@
         <h1 class="font-semibold text-4xl text-gray-800 leading-tight">
             {{ __($queue->name." - $queue->unique_code") }}
         </h1>
+        <a href="/q/{{ $queue->unique_code }}" class="ui mini purple circular button" target="_blank">Live</a>
+        <a href="/queue/edit/{{ $queue->id }}" class="ui mini black circular button">Edit</a>
     </x-slot>
 
     <div class="py-4">
