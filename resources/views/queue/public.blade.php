@@ -15,24 +15,19 @@
         </h1>
 
         <h1 class="ui centered header" style="font-size: 4rem">
-            # <span id="result">{{ $queue->number }}</span>
+            #<span class="queue_number" id="result">{{ $queue->number }}</span>
         </h1>
 
         <div class="ui centered header" onload="startTime()">
             <div id="txt"></div>
         </div>
+
+        <button class="ui transition hidden submit-form" data-id="0" data-send="/x/{{ $queue->unique_code }}"></button>
     </x-jet-authentication-card>
 
     <script>
-        if(typeof(EventSource) !== "undefined") {
-          var source = new EventSource("/x/{{ $queue->unique_code }}");
-          source.onmessage = function(event) {
-            document.getElementById("result").innerHTML = event.data + "<br>";
-          };
-        } else {
-          document.getElementById("result").innerHTML = "Sorry, your browser does not support server-sent events...";
-        }
-
+        setInterval(() => {
+            console.log('hi')
+        }, 1000);
     </script>
- 
 </x-guest-layout>
