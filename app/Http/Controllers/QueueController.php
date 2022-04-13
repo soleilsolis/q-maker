@@ -120,10 +120,12 @@ class QueueController extends Controller
      */
     public function store(Queue $queue, Request $request)
     {
+        $message = ['regex' => 'The unique code format is invalid. <br> Allowed: alpha-numeric characters (small letters, capital letters and numbers)'];
+        
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
             'unique_code' => ['required', 'unique:queues', 'string', 'max:13' ,'regex:/^[a-zA-Z0-9]+$/u']
-        ]);
+        ],$message);
 
         if ($validator->fails()) 
         {
@@ -143,7 +145,6 @@ class QueueController extends Controller
         return response()->json([
             'reload' => 1
         ]);
-
     }
 
     /**
@@ -162,7 +163,7 @@ class QueueController extends Controller
             ->where(DB::raw('date(created_at)'), '=', $now)
             ->orderBy('number', 'asc')
             ->get();
-
+        
         if($queue->number)
         {
             $item = Item::where('queue_id', '=', $queue->id)
@@ -183,7 +184,7 @@ class QueueController extends Controller
             'items' => $items
         ]);
     }
-
+    
     /**
      * Show the form for editing the specified resource.
      *
