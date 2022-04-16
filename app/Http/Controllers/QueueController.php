@@ -78,7 +78,7 @@ class QueueController extends Controller
             if($item && $item->phone_number)
             {
                 $sid = 'AC7f1969a745b9e0f8c4fe3b3e3bffc4e5';
-                $token = 'c00f5727a6be4ab835e5ee2069ee0a30';
+                $token = 'a3a2d02b82cc4ff220bcaeece61e11d7';
                 $client = new Client($sid, $token);
 
                 // Use the client to do fun stuff like send text messages!
