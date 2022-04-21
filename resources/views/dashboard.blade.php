@@ -41,6 +41,11 @@
                     <label for="unique_code">Unique Key</label>
                     <input id="unique_code" name="unique_code" type="text" />
                 </div>
+
+                <div class="field">
+                    <label for="unique_code">Queue Limit</label>
+                    <input id="limit" name="limit" type="number" />
+                </div>
             </form>
         </div>
         <div class="actions">

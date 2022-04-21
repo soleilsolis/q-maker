@@ -15,7 +15,7 @@
             </div>
         </h1>
 
-        <h1 class="ui centered header" style="font-size: 4rem">
+        <h1 class="ui centered header" style="font-size: 8rem">
             #<span class="queue_number">{{ $queue->number }}</span>
         </h1>
 
