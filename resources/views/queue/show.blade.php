@@ -77,9 +77,9 @@
                     @endisset
 
                     @isset($first_item_id)
-                        <form class="mt-5" action="">
+                        <div class="mt-5" >
                             <button class="ui large circular button red submit-form" data-id="{{ $first_item_id }}" data-send="/queue/emergency">Emergency Message</button>
-                        </form>
+                        </div>
                     @endisset
                 </div>
             </div>
