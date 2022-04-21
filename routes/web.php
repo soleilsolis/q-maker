@@ -46,6 +46,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function (){
 
         Route::post('/store', [QueueController::class, 'store']);
         Route::post('/next', [QueueController::class, 'next']);
+        Route::post('/emergency', [QueueController::class, 'emergency']);
 
     }); 
 
