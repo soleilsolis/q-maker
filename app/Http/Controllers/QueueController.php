@@ -84,14 +84,14 @@ class QueueController extends Controller
                     // A Twilio phone number you purchased at twilio.com/console
                     'from' => '+15076985456',
                     // the body of the text message you'd like to send
-                    'body' => "Sorry for the inconvenience.\n Your queue would be delayed.\n There has been a problem on our end.\n We'll get back to you soon."
+                    'body' => "Sorry for the inconvenience.\nYour queue would be delayed.\nThere has been a problem on our end.\nWe'll get back to you soon."
                 ]
             );
         }
       
-        return response()->json([
+         return response()->json([
             'reload' => 0,
-            'message' => "Emergency message sent to {$item->phone_number}",
+            'message' => 'Changes Saved',
             'color' => 'success'
         ]);
     }
