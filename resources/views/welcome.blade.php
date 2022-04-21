@@ -37,9 +37,10 @@
             <div class="text-center">
                 <p class="text-white font-bold" style="font-size: 5rem">Q:Maker</p>
                 <p class="text-white text-2xl">RTU Queue System</p>
+                <p class="text-white text-2xl text-center">
+                    <img class="w-24 mt-4 mx-auto" src="/image/RTU_Seal.png" alt="">
+                </p>
             </div>
-            
-
         </div>
     </body>
 </html>

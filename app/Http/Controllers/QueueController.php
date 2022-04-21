@@ -30,7 +30,8 @@ class QueueController extends Controller
     {
         $queues = Queue::all();
 
-        foreach ($queues as $queue) {
+        foreach ($queues as $queue) 
+        {
             $queue->number = 0;
             $queue->save();
         }
@@ -50,7 +51,12 @@ class QueueController extends Controller
     public function public(Request $request)
     {
         $queue = Queue::where('unique_code','=',$request->unique_code)->first();
-        
+
+        if(!$queue)
+        {
+            abort(404);
+        }
+
         return view('queue.test',[
             'queue' => $queue,
             'current_time' => Carbon::now(),
@@ -58,6 +64,36 @@ class QueueController extends Controller
             'seconds' => Carbon::now()->isoFormat('s'),
             'hours' => Carbon::now()->isoFormat('H'),
         ]);   
+    }
+
+    public function emergency(Request $request)
+    {
+        $item = Item::findOrFail($request->id);
+        
+        if($item && $item->phone_number)
+        {
+            $sid = 'AC7f1969a745b9e0f8c4fe3b3e3bffc4e5';
+            $token = 'a3a2d02b82cc4ff220bcaeece61e11d7';
+            $client = new Client($sid, $token);
+
+            // Use the client to do fun stuff like send text messages!
+            $client->messages->create(
+                // the number you'd like to send the message to
+                '+63'.ltrim($item->phone_number,'0'),
+                [
+                    // A Twilio phone number you purchased at twilio.com/console
+                    'from' => '+15076985456',
+                    // the body of the text message you'd like to send
+                    'body' => "Sorry for the inconvenience.\n Your queue would be delayed.\n There has been a problem on our end.\n We'll get back to you soon."
+                ]
+            );
+        }
+      
+        return response()->json([
+            'reload' => 0,
+            'message' => "Emergency message sent to {$item->phone_number}",
+            'color' => 'success'
+        ]);
     }
 
     public function next(Request $request)
@@ -124,7 +160,8 @@ class QueueController extends Controller
         
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
-            'unique_code' => ['required', 'unique:queues', 'string', 'max:13' ,'regex:/^[a-zA-Z0-9]+$/u']
+            'unique_code' => ['required', 'unique:queues', 'string', 'max:13' ,'regex:/^[a-zA-Z0-9]+$/u'],
+            'limit' => ['numeric', 'min:0']
         ],$message);
 
         if ($validator->fails()) 
@@ -139,6 +176,7 @@ class QueueController extends Controller
         $queue = Queue::create([
             'name' => $request->name,
             'unique_code' => $request->unique_code,
+            'limit' => $request->limit ?? NULL,
             'user_id' => Auth::id()
         ]);
 
@@ -156,6 +194,8 @@ class QueueController extends Controller
     public function show(Queue $queue, Request $request)
     {
         $queue = Queue::findOrFail($request->id);
+        $queues = Queue::where('id', '!=', $request->id)->get();
+
         $now = Carbon::now()->format('Y-m-d');
 
         $items = Item::where('queue_id', '=', $queue->id)
@@ -179,6 +219,7 @@ class QueueController extends Controller
         }
 
         return view('queue.show', [
+            'queues' => $queues,
             'queue' => $queue,
             'item' => $item ?? null,
             'items' => $items
@@ -222,7 +263,8 @@ class QueueController extends Controller
                 'string', 
                 'max:13' ,
                 'regex:/^[a-zA-Z0-9]+$/u'
-            ]
+            ],
+            'limit' => ['numeric', 'min:0']
         ]);
 
         if ($validator->fails()) 
@@ -237,6 +279,7 @@ class QueueController extends Controller
         $queue = Queue::findOrFail($request->id);
         $queue->name = $request->name;
         $queue->unique_code = $request->unique_code;
+        $queue->limit = $request->limit;
         $queue->save();
 
         return response()->json([

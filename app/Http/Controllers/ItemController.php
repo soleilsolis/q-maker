@@ -35,6 +35,41 @@ class ItemController extends Controller
         //
     }
 
+    public function forward(Request $request, Item $item)
+    {
+        $now = Carbon::now()->format('Y-m-d');
+
+        $queue = Queue::findOrFail($request->forward_queue_id);
+
+        $forward_item = Item::where('queue_id', '=', $request->forward_queue_id)
+                    ->where(DB::raw('date(created_at)'),'=',$now)
+                    ->orderBy('number', 'desc');
+
+        if($queue->limit && $queue->limit == $forward_item->count())
+        {
+            return response()->json([
+                'errors' => ['number' => 'The limit for this queue has been reached'],
+                'message' => 'error',
+                'color' => 'error'
+            ]);
+        }
+
+        $forward_item = $forward_item->first();
+
+        $item = Item::find($request->item_id);
+
+        Item::create([
+            'name' => $item->name,
+            'number' => !empty($forward_item->number) ? $forward_item->number+1 : 1,
+            'queue_id' => $request->forward_queue_id,
+            'phone_number' => $item->phone_number
+        ]);
+
+        return response()->json([
+            'reload' => 1,
+        ]);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -60,14 +95,29 @@ class ItemController extends Controller
             ]);
         }
 
-        $queue = Queue::where('user_id', '=', Auth::id())->where('id', '=', $request->queue_id)->first();
+        $queue = Queue::where('user_id', '=', Auth::id())
+                    ->where('id', '=', $request->queue_id)
+                    ->first();
 
         if(!$queue)
         {
             abort(404);
         }
 
-        $item = Item::where('queue_id', '=', $request->queue_id)->where(DB::raw('date(created_at)'),'=',$now)->orderBy('number', 'desc')->first();
+        $item = Item::where('queue_id', '=', $request->queue_id)
+                    ->where(DB::raw('date(created_at)'),'=',$now)
+                    ->orderBy('number', 'desc');
+
+        if($queue->limit && $queue->limit == $item->count())
+        {
+            return response()->json([
+                'errors' => ['number' => 'The limit for this queue has been reached'],
+                'message' => 'error',
+                'color' => 'error'
+            ]);
+        }
+
+        $item = $item->first();
 
         Item::create([
             'name' => $request->name,

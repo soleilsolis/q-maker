@@ -20,6 +20,7 @@ class CreateQueuesTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->bigInteger('number')->default(0);
+            $table->bigInteger('limit')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

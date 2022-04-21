@@ -20,9 +20,14 @@
                         <label for="unique_code">Unique Code</label>
                         <input id="unique_code" name="unique_code" type="text" value="{{ $queue->unique_code }}">
                     </div>
+                    <div class="field">
+                        <label for="limit">Limit</label>
+                        <input id="limit" name="limit" type="number" value="{{ $queue->limit ?? 0 }}">
+                    </div>
                 </form>
 
                 <br>
+
                 <button class="ui purple circular button submit-form" data-form="editQueue" data-send="/queue/update/{{ $queue->id }}">Save</button>
                 <a id="delete" class="ui red circular button" target="_blank">Delete</a>
             </div>
@@ -37,9 +42,8 @@
             <button class="ui circular red button submit-form" data-form="editQueue" data-send="/queue/delete/{{ $queue->id }}">Yes</button>
         </div>
     </div>
-
-    
 </x-app-layout>
+
 <script>
     $('#delete').click(function(){
         $('.modal').modal('show');
