@@ -27,7 +27,7 @@
     <body class="font-sans antialiased">
         <x-jet-banner />
 
-        <div class="min-h-screen bg-gray-100">
+        <div class="min-h-screen bg-gray-100 bg-center bg-no-repeat" style="background-image: url(/image/RTU_Sea_big.png); ">
             @livewire('navigation-menu')
 
             <!-- Page Heading -->
@@ -40,7 +40,7 @@
             @endif
 
             <!-- Page Content -->
-            <main>
+            <main class="" >
                 {{ $slot }}
             </main>
         </div>

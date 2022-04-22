@@ -12,7 +12,8 @@ class Queue extends Model
     protected $fillable = [
         'user_id',
         'name',
-        'unique_code'
+        'unique_code',
+        'limits'
     ];
 
     public function user()

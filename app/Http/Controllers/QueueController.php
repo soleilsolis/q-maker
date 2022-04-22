@@ -176,7 +176,7 @@ class QueueController extends Controller
         $queue = Queue::create([
             'name' => $request->name,
             'unique_code' => $request->unique_code,
-            'limit' => $request->limit ?? NULL,
+            'limits' => $request->limit,
             'user_id' => Auth::id()
         ]);
 
@@ -279,7 +279,7 @@ class QueueController extends Controller
         $queue = Queue::findOrFail($request->id);
         $queue->name = $request->name;
         $queue->unique_code = $request->unique_code;
-        $queue->limit = $request->limit;
+        $queue->limits = $request->limit;
         $queue->save();
 
         return response()->json([

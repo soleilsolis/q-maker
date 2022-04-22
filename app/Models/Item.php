@@ -10,4 +10,8 @@ class Item extends Model
     use HasFactory;
     protected $fillable = ['name', 'number', 'phone_number', 'queue_id'];
     
+    public function queue()
+    {
+        return $this->belongsTo(Queue::class);
+    }
 }
