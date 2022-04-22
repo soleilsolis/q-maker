@@ -45,7 +45,7 @@ class ItemController extends Controller
                     ->where(DB::raw('date(created_at)'),'=',$now)
                     ->orderBy('number', 'desc');
 
-        if($queue->limit && $queue->limit == $forward_item->count())
+        if($queue->limits && $queue->limits == $forward_item->count())
         {
             return response()->json([
                 'errors' => ['number' => 'The limit for this queue has been reached'],
@@ -64,6 +64,10 @@ class ItemController extends Controller
             'queue_id' => $request->forward_queue_id,
             'phone_number' => $item->phone_number
         ]);
+
+        $current_queue = $item->queue;
+        $current_queue->number++;
+        $current_queue->save();
 
         return response()->json([
             'reload' => 1,
@@ -108,7 +112,7 @@ class ItemController extends Controller
                     ->where(DB::raw('date(created_at)'),'=',$now)
                     ->orderBy('number', 'desc');
 
-        if($queue->limit && $queue->limit == $item->count())
+        if($queue->limits && $queue->limits == $item->count())
         {
             return response()->json([
                 'errors' => ['number' => 'The limit for this queue has been reached'],

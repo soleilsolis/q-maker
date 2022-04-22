@@ -22,7 +22,7 @@
                     </div>
                     <div class="field">
                         <label for="limit">Limit</label>
-                        <input id="limit" name="limit" type="number" value="{{ $queue->limit ?? 0 }}">
+                        <input id="limit" name="limit" type="number" value="{{ $queue->limits ?? 0 }}">
                     </div>
                 </form>
 
